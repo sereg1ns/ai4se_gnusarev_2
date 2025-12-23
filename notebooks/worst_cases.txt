@@ -1,0 +1,77 @@
+ROGUE-L: 0.00
+Prediction: _request
+Reference: put
+Body with comments: """HTTP PUT operation to API endpoint."""
+
+        return self._request('PUT', endpoint, **kwargs)
+####################################################
+ROGUE-L: 0.00
+Prediction: decode
+Reference: gen_tags
+Body with comments: """
+        :yields: the tags associated to the given tagname
+        """
+        for tagvalue in getattr(self, tagname):
+            yield '%s=%s' % (tagname, decode(tagvalue))
+####################################################
+ROGUE-L: 0.00
+Prediction: defextract_notes
+Reference: extractNotes
+Body with comments: ''' This functions uses legend data to extract e.g. (1) references in a
+        meal name and add these in full text to the notes.
+
+        :param str name: The meal name
+        :param list notes: The initial list of notes for this meal
+        :param dict legend: The legend data. Use `None` to skip extraction. The
+            key is searched inside the meal name (with the given regex) and if
+            found the value is added to the notes list.
+        :param re.compile regex: The regex to find legend references in the
+            meal name. The regex must have exactly one group which identifies
+            the key in the legend data. If you pass None the
+            :py:data:`default_extra_regex` is used. Only compiled regex are
+            supported.
+        :param callable key: function to map the key to a legend key
+        :rtype: tuple with name and notes'''
+    if legend is None:
+        return name, notes
+    if regex is None:
+        regex = default_extra_regex
+    # extract note
+    for note in list(','.join(regex.findall(name)).split(',')):
+        if not note:
+            continue
+        note = key(note)
+        if note in legend:
+            if legend[note] not in notes:
+                notes.append(legend[note])
+        else:
+            print('could not find extra note "{0}"'.format(note))
+    # from notes from name
+    name = regex.sub('', name).replace('\xa0', ' ').replace('  ', ' ').strip()
+    return name, notes
+####################################################
+ROGUE-L: 0.00
+Prediction: takeScreenshot
+Reference: take_screeshot
+Body with comments: '''
+		Take a screenshot of the virtual viewport content.
+
+		Return value is a png image as a bytestring.
+		'''
+		resp = self.Page_captureScreenshot()
+		assert 'result' in resp
+		assert 'data' in resp['result']
+		imgdat = base64.b64decode(resp['result']['data'])
+		return imgdat
+####################################################
+ROGUE-L: 0.00
+Prediction: remove_member_nodes
+Reference: do_removerep
+Body with comments: """removerep <member node> [member node ...] Remove one or more Member Nodes
+        from replication policy."""
+        mns = self._split_args(line, 1, -1)
+        self._command_processor.get_session().get_replication_policy().repremove(mns)
+        self._print_info_if_verbose(
+            "Removed {} from replication policy".format(", ".join(mns))
+        )
+####################################################
